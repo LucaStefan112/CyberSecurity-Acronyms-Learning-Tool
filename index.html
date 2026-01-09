@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Security+ Acronym Trainer</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background-color: #0f172a;
+      color: #e5e7eb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .card {
+      background-color: #020617;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 40px;
+      width: 420px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    }
+
+    .acronym {
+      font-size: 64px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-bottom: 20px;
+      user-select: none;
+    }
+
+    .hint {
+      font-size: 14px;
+      color: #94a3b8;
+      margin-bottom: 20px;
+    }
+
+    .full-name {
+      font-size: 20px;
+      min-height: 28px;
+      margin-bottom: 15px;
+    }
+
+    .description {
+      font-size: 14px;
+      color: #94a3b8;
+      min-height: 20px;
+      margin-bottom: 30px;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <div id="acronym" class="acronym"></div>
+    <div class="hint">Click the acronym to reveal its meaning <i>(Enter / Space)</i></div>
+    <div id="fullName" class="full-name"></div>
+    <div id="description" class="description"></div>
+  </div>
+
+  <script>
+    let acronyms = [];
+    let current = null;
+
+    async function loadAcronyms() {
+      const response = await fetch("acronyms.json");
+      const data = await response.json();
+      acronyms = data.acronyms;
+      nextAcronym();
+    }
+
+    function nextAcronym() {
+      if (!acronyms.length) return;
+      current = acronyms[Math.floor(Math.random() * acronyms.length)];
+      document.getElementById("acronym").textContent = current.acronym;
+      document.getElementById("fullName").textContent = "";
+      document.getElementById("description").textContent = "";
+    }
+
+    function revealFullName() {
+      if (current) {
+        document.getElementById("fullName").textContent = current.name;
+        document.getElementById("description").textContent = current.description || "";
+      }
+    }
+
+    function isFullNameShown() {
+      return document.getElementById("fullName").textContent !== "";
+    }
+
+    document.getElementById("acronym").addEventListener("click", () => {
+      if (!isFullNameShown()) {
+        revealFullName();
+      } else {
+        nextAcronym();
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        if (!isFullNameShown()) {
+          revealFullName();
+        } else {
+          nextAcronym();
+        }
+      }
+    });
+
+    loadAcronyms();
+  </script>
+
+</body>
+</html>
