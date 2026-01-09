@@ -2,35 +2,76 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Security+ Acronym Trainer</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background-color: #0f172a;
       color: #e5e7eb;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
       margin: 0;
+      padding: 20px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+      width: 100%;
+      max-width: 800px;
+    }
+
+    .header h1 {
+      font-size: clamp(24px, 5vw, 32px);
+      font-weight: 700;
+      margin: 0 0 12px 0;
+      color: #e5e7eb;
+    }
+
+    .header p {
+      font-size: clamp(14px, 3vw, 16px);
+      color: #94a3b8;
+      margin: 0;
+      line-height: 1.5;
+      padding: 0 10px;
     }
 
     .card {
       background-color: #020617;
       border: 1px solid #1e293b;
       border-radius: 12px;
-      padding: 40px;
-      width: 420px;
+      padding: clamp(20px, 5vw, 40px);
+      width: fit-content;
+      min-width: min(300px, 90vw);
+      max-width: min(600px, 90vw);
       text-align: center;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
 
     .acronym {
-      font-size: 64px;
+      font-size: clamp(36px, 10vw, 64px);
       font-weight: 700;
       cursor: pointer;
-      margin-bottom: 20px;
       user-select: none;
+      word-break: break-word;
+      overflow-wrap: break-word;
+      margin-bottom: 0;
+    }
+
+    .full-name:not(:empty) {
+      margin-top: 20px;
     }
 
     .hint {
@@ -40,25 +81,91 @@
     }
 
     .full-name {
-      font-size: 20px;
-      min-height: 28px;
+      font-size: clamp(16px, 4vw, 20px);
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+
+    .full-name:empty {
+      display: none;
+    }
+
+    .full-name:not(:empty) {
       margin-bottom: 15px;
     }
 
     .description {
-      font-size: 14px;
+      font-size: clamp(12px, 3vw, 14px);
       color: #94a3b8;
-      min-height: 20px;
-      margin-bottom: 30px;
       line-height: 1.5;
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+
+    .description:empty {
+      display: none;
+    }
+
+    .description:not(:empty) {
+      margin-bottom: 30px;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 15px;
+      }
+
+      .header {
+        margin-bottom: 30px;
+      }
+
+      .card {
+        padding: 25px 20px;
+      }
+
+      .full-name:not(:empty) {
+        margin-top: 15px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 10px;
+      }
+
+      .header {
+        margin-bottom: 20px;
+      }
+
+      .header h1 {
+        margin-bottom: 8px;
+      }
+
+      .card {
+        padding: 20px 15px;
+        border-radius: 8px;
+      }
+
+      .full-name:not(:empty) {
+        margin-top: 12px;
+        margin-bottom: 12px;
+      }
+
+      .description:not(:empty) {
+        margin-bottom: 20px;
+      }
     }
   </style>
 </head>
 <body>
 
+  <div class="header">
+    <h1>Cybersecurity Acronyms Learning Tool</h1>
+    <p>Learn and practice cybersecurity acronyms. Click or press Enter/Space to reveal the answer.</p>
+  </div>
+
   <div class="card">
     <div id="acronym" class="acronym"></div>
-    <div class="hint">Click the acronym to reveal its meaning <i>(Enter / Space)</i></div>
     <div id="fullName" class="full-name"></div>
     <div id="description" class="description"></div>
   </div>
